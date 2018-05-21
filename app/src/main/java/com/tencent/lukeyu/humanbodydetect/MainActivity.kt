@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+
 //    curl -X POST "https://api-cn.faceplusplus.com/humanbodypp/v1/detect" -F "api_key=<api_key>" \
 //    -F "api_secret=<api_secret>" \
 //    -F "image_file=@image_file.jpg" \
@@ -14,7 +16,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Example of a call to a native method
-        sample_text.text = stringFromJNI()
+        sample_text.text = loadApiKeyFromAsset()
+
+
+
     }
 
     /**
@@ -29,5 +34,9 @@ class MainActivity : AppCompatActivity() {
         init {
             System.loadLibrary("native-lib")
         }
+    }
+
+    private fun loadApiKeyFromAsset(): String? {
+        return assets.open("api.store")?.bufferedReader()?.use { it.readText() }
     }
 }
