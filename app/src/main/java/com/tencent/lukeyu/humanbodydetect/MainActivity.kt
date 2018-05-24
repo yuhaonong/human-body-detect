@@ -10,6 +10,7 @@ import java.net.URL
 import java.util.UUID
 
 const val API_URL = "https://api-cn.faceplusplus.com/humanbodypp/v1/detect"
+const val IMAGE_URL = "http://img.chinaluxus.com/pic/view/2011/07/20/20110720085657323.jpg"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             conn.doInput = true
             conn.doOutput = true
             conn.useCaches = false
-            conn.connect()
+//            conn.connect()
 
             //    curl -X POST "https://api-cn.faceplusplus.com/humanbodypp/v1/detect"
             //    -F "api_key=<api_key>" \
@@ -43,14 +44,20 @@ class MainActivity : AppCompatActivity() {
             //    -F "return_attributes=gender"
             val outputStream = DataOutputStream(conn.outputStream)
             outputStream.writeBytes("api_key=$api_key")
-            outputStream.writeBytes("api_secret=$api_secret")
-            outputStream.writeBytes("image_url=\"http://inews.gtimg.com/newsapp_match/0/3687254466/0\"")
-            outputStream.writeBytes("return_attributes=gender")
+            outputStream.writeBytes("&api_secret=$api_secret")
+            outputStream.writeBytes("&image_url=$IMAGE_URL")
+            outputStream.writeBytes("&return_attributes=gender")
             outputStream.flush()
             outputStream.close()
 
             val respCode = conn.responseCode
-            runOnUiThread { this@MainActivity.sample_text.text = respCode.toString() }
+            val msg: String?
+            if (respCode != 200) {
+                msg = conn.errorStream?.bufferedReader()?.use { it.readText() }
+            } else {
+                msg = conn.inputStream?.bufferedReader()?.use { it.readText() }
+            }
+            runOnUiThread { this@MainActivity.sample_text.text = respCode.toString() + msg}
 //            val inputStream = conn.inputStream
 //            val reader = BufferedReader(InputStreamReader(inputStream))
 //            val strBuilder = StringBuilder()
