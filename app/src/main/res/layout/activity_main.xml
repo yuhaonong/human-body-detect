@@ -16,4 +16,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/sample_text"
+        app:layout_constraintStart_toStartOf="@+id/sample_text"
+        app:srcCompat="@android:drawable/ic_lock_lock" />
+
 </android.support.constraint.ConstraintLayout>
